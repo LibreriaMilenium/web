@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Librería Milenium</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%);
+      position: relative;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .header-logo {
+      height: 60px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+    .logo-left {
+      left: 20px;
+    }
+    .logo-right {
+      right: 20px;
+    }
+    .header-title {
+      position: relative;
+      padding: 0 80px;
+    }
+    .header-title h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .header-subtitle {
+      display: block;
+      font-size: 1rem;
+      margin-top: 5px;
+      font-weight: normal;
+      color: #bdc3c7;
+    }
+    .container, .suscribe, .admin, .social {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .background-blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c');
+      background-size: cover;
+      background-position: center;
+      filter: blur(3px);
+      opacity: 0.4;
+      z-index: 0;
+    }
+    .container {
+      padding: 2rem 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      justify-items: center;
+    }
+    .book {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      padding: 1.2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #eee;
+      cursor: pointer;
+    }
+    .book:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    }
+    .book img {
+      max-width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      transition: all 0.3s ease;
+    }
+    .book:hover img {
+      transform: scale(1.03);
+    }
+    .book h4 {
+      margin: 0.8rem 0 0.3rem;
+      font-size: 1.1rem;
+      color: #2c3e50;
+      min-height: 2.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin, .suscribe, .social {
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 12px;
+      max-width: 800px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+    button {
+      background: linear-gradient(to right, #3498db, #2980b9);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      margin-top: 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+    }
+    .social-icons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .social-icons a {
+      text-decoration: none;
+      color: #2c3e50;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 30px;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+    .social-icons a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      background: #e3f2fd;
+    }
+    .social-icons img {
+      width: 28px;
+      height: 28px;
+    }
+    #admin-panel {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.25);
+      z-index: 1000;
+      max-width: 95%;
+      max-height: 95vh;
+      overflow-y: auto;
+      width: 90%;
+    }
+    #admin-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 999;
+    }
+    .carousel-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      margin: 3rem 0;
+      padding: 0 1rem;
+    }
+    .carousel {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .carousel-item {
+      min-width: 250px;
+      margin: 0 1rem;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .carousel-item:hover {
+      transform: scale(1.05);
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      border: 3px solid white;
+    }
+    .carousel-item h4 {
+      margin-top: 1rem;
+      color: #2c3e50;
+      font-size: 1.1rem;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .carousel-btn:hover {
+      background: rgba(0,0,0,0.9);
+      transform: translateY(-50%) scale(1.1);
+    }
+    .carousel-btn.prev {
+      left: 20px;
+    }
+    .carousel-btn.next {
+      right: 20px;
+    }
+    .qr-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+    .qr-container img {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      background: white;
+      padding: 12px;
+      margin-top: 1rem;
+    }
+    .logout-btn {
+      background: linear-gradient(to right, #e74c3c, #c0392b);
+    }
+    .logout-btn:hover {
+      box-shadow: 0 6px 12px rgba(231, 76, 60, 0.4);
+    }
+    .config-btn {
+      background: linear-gradient(to right, #2ecc71, #27ae60);
+    }
+    .edit-btn {
+      background: linear-gradient(to right, #f39c12, #d35400);
+    }
+    .admin-section {
+      margin-bottom: 1.8rem;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 1px solid #eee;
+    }
+    .admin-section h4 {
+      margin-top: 0;
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.7rem 0;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    .form-row {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .form-row > * {
+      flex: 1;
+      min-width: 200px;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #3498db;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 0.7rem 1.5rem;
+      cursor: pointer;
+      background: #e3f2fd;
+      border: none;
+      border-radius: 5px 5px 0 0;
+      margin-right: 0.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .tab:hover {
+      background: #bbdefb;
+    }
+    .tab.active {
+      background: #3498db;
+      color: white;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .book-actions {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .book-actions button {
+      margin-top: 0;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+    }
+    #edit-book-form {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: #f0f7ff;
+      border-radius: 10px;
+      border: 1px solid #d1e7ff;
+    }
+    .section-title {
+      text-align: center;
+      margin: 2rem 0 1.5rem;
+      color: #2c3e50;
+      font-size: 1.8rem;
+      font-weight: bold;
+      grid-column: 1 / -1;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: #3498db;
+      margin: 0.8rem auto;
+      border-radius: 2px;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .login-form input {
+      padding: 0.8rem;
+    }
+    .login-form button {
+      margin-top: 0.5rem;
+    }
+    .category-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+      padding: 0 1rem;
+    }
+    .category-tab {
+      padding: 0.7rem 1.2rem;
+      background: #3498db;
+      color: white;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+    }
+    .category-tab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(52, 152, 219, 0.4);
+    }
+    .category-tab.active {
+      background: #2980b9;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(41, 128, 185, 0.5);
+    }
+    .user-info {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: white;
+      font-weight: bold;
+      background: rgba(0,0,0,0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .logout-user-btn {
+      background: #e74c3c;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+      border-radius: 20px;
+    }
+    .search-container {
+      display: flex;
+      justify-content: center;
+      margin: 1.5rem 0;
+      padding: 0 1rem;
+    }
+    .search-box {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 0.8rem 3rem 0.8rem 1.5rem;
+      border-radius: 30px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .search-icon {
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+      font-size: 1.2rem;
+    }
+    .image-upload-container {
+      margin: 1.2rem 0;
+    }
+    .image-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+      justify-content: center;
+    }
+    .image-preview-item {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      border: 2px solid white;
+    }
+    .image-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .remove-image-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .saga-images-container {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      background: #f0f7ff;
+      border-radius: 10px;
+      border: 1px dashed #3498db;
+    }
+    .saga-images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    .saga-image-item {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      border: 2px solid white;
+    }
+    .saga-image-item img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+    .remove-saga-image-btn {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .upload-options {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .upload-option {
+      flex: 1;
+      text-align: center;
+      padding: 1.2rem;
+      border: 2px dashed #3498db;
+      border-radius: 8px;
+      cursor: pointer;
+      min-width: 200px;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+    .upload-option:hover {
+      background: #e3f2fd;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    .book-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      background: white;
+      padding: 1.2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      z-index: 10;
+      display: none;
+      text-align: left;
+      border: 1px solid #eee;
+    }
+    .book:hover .book-tooltip {
+      display: block;
+    }
+    .book-tooltip h5 {
+      margin-top: 0;
+      color: #2c3e50;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+    .book-tooltip p {
+      margin: 0.8rem 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .book-tooltip ul {
+      padding-left: 1.2rem;
+      margin: 0.8rem 0;
+    }
+    .book-tooltip li {
+      margin-bottom: 0.5rem;
+    }
+    .close-admin-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .admin-access-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    .admin-access-btn:hover {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .confirm-image-btn {
+      background: linear-gradient(to right, #2ecc71, #27ae60);
+      margin: 0.8rem auto;
+      display: block;
+    }
+    .preview-actions {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      margin-top: 0.8rem;
+    }
+    .total-books {
+      background: linear-gradient(to right, #3498db, #2980b9);
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 30px;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4);
+    }
+    .book p {
+      color: #7f8c8d;
+      font-size: 0.95rem;
+      margin: 0.3rem 0;
+    }
+    .not-available {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    .available {
+      color: #27ae60;
+      font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      .header-logo {
+        height: 45px;
+      }
+      .header-title {
+        padding: 0 60px;
+      }
+      .header-title h1 {
+        font-size: 1.6rem;
+      }
+      .upload-options {
+        flex-direction: column;
+      }
+      .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+      }
+      .container {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+    }
+    @media (max-width: 480px) {
+      .header-logo {
+        position: relative;
+        display: block;
+        margin: 0.5rem auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        transform: none;
+      }
+      .logo-left, .logo-right {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+      }
+      .header-title {
+        padding: 0;
+      }
+      .user-info {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin: 0.5rem auto;
+        width: fit-content;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-blur" id="background-image"></div>
+
+  <header>
+    <img src="https://cdn.pixabay.com/photo/2016/09/16/09/21/open-book-1673578_960_720.png" alt="Logo Librería Milenium" class="header-logo logo-left" id="header-logo-left">
+    <div class="header-title">
+      <h1>Librería Milenium <span class="header-subtitle">Santiago Tianguistenco</span></h1>
+    </div>
+    <img src="https://cdn.pixabay.com/photo/2016/09/16/09/21/open-book-1673578_960_720.png" alt="Logo Librería Milenium" class="header-logo logo-right" id="header-logo-right">
+    <div id="user-info" class="user-info" style="display: none;">
+      <span id="user-email"></span>
+      <button class="logout-user-btn" onclick="logoutUser()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <!-- Carrusel de libros nuevos -->
+  <section class="carousel-container">
+    <h3 class="section-title">Libros nuevos</h3>
+    <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#10094;</button>
+    <button class="carousel-btn next" onclick="moveCarousel(1)">&#10095;</button>
+    <div class="carousel" id="new-books-carousel">
+      <!-- Libros nuevos se generarán dinámicamente -->
+    </div>
+  </section>
+
+  <section class="suscribe" id="login-user-section">
+    <h3>Acceso de administrador</h3>
+    <div class="login-form">
+      <input type="email" id="login-email" placeholder="Correo del administrador" required>
+      <input type="password" id="login-password" placeholder="Contraseña" required>
+      <button onclick="loginUser()">Iniciar sesión</button>
+    </div>
+  </section>
+
+  <div class="search-container">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Buscar por título, autor o categoría...">
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+
+  <div class="category-tabs" id="category-tabs">
+    <div class="category-tab active" data-category="all">Todos</div>
+    <div class="category-tab" data-category="literatura">Literatura</div>
+    <div class="category-tab" data-category="consulta">Consulta</div>
+    <div class="category-tab" data-category="artisticos">Artísticos</div>
+    <div class="category-tab" data-category="divulgativos">Divulgativos</div>
+    <div class="category-tab" data-category="tecnicos">Técnicos</div>
+    <div class="category-tab" data-category="practicos">Prácticos</div>
+    <div class="category-tab" data-category="religiosos">Religiosos</div>
+    <div class="category-tab" data-category="autoayuda">Autoayuda</div>
+    <div class="category-tab" data-category="infantiles">Infantiles</div>
+    <div class="category-tab" data-category="novelas">Novelas</div>
+    <div class="category-tab" data-category="suspenso">Suspenso</div>
+    <div class="category-tab" data-category="sagas">Sagas</div>
+  </div>
+
+  <section class="container" id="book-list">
+    <!-- Libros generados dinámicamente -->
+  </section>
+
+  <button class="admin-access-btn" onclick="mostrarPanelAdmin()">🔑</button>
+
+  <div id="admin-overlay"></div>
+
+  <section class="admin" id="admin-panel">
+    <button class="close-admin-btn" onclick="cerrarSesionAdmin()">×</button>
+    <h3>Zona de administrador</h3>
+    
+    <div class="total-books">
+      Total de libros: <span id="total-books-count">0</span>
+    </div>
+    
+    <div class="tabs">
+      <div class="tab active" onclick="openTab('books-tab')">Libros</div>
+      <div class="tab" onclick="openTab('images-tab')">Imágenes</div>
+      <div class="tab" onclick="openTab('social-tab')">Redes Sociales</div>
+      <div class="tab" onclick="openTab('logo-tab')">Logotipos</div>
+    </div>
+    
+    <div id="books-tab" class="tab-content active">
+      <div class="admin-section">
+        <h4>Agregar nuevo libro</h4>
+        <input id="titulo" placeholder="Título del libro" />
+        <input id="resena" placeholder="Reseña del libro" />
+        <input id="caracteristica1" placeholder="Característica 1" />
+        <input id="caracteristica2" placeholder="Característica 2" />
+        <div class="form-row">
+          <input id="autor" placeholder="Autor" />
+          <input id="editorial" placeholder="Editorial" />
+        </div>
+        <select id="categoria">
+          <option value="literatura">Literatura</option>
+          <option value="consulta">Consulta y referencia</option>
+          <option value="artisticos">Artísticos e ilustrados</option>
+          <option value="divulgativos">Divulgativos</option>
+          <option value="tecnicos">Técnicos o especializados</option>
+          <option value="practicos">Prácticos</option>
+          <option value="religiosos">Religiosos y sagrados</option>
+          <option value="autoayuda">Autoayuda</option>
+          <option value="infantiles">Infantiles</option>
+          <option value="novelas">Novelas</option>
+          <option value="suspenso">Suspenso</option>
+          <option value="sagas">Sagas</option>
+        </select>
+        <select id="disponible">
+          <option value="true">Disponible</option>
+          <option value="false">No disponible</option>
+        </select>
+        
+        <div class="upload-options">
+          <div class="upload-option" onclick="document.getElementById('file-input').click()">
+            Subir imagen desde dispositivo
+            <input type="file" id="file-input" style="display: none;" accept="image/*" onchange="handleFileUpload()">
+          </div>
+          <div class="upload-option">
+            Usar URL de imagen
+            <input id="imagen" placeholder="URL de la imagen" style="margin-top: 0.5rem;" />
+            <button class="confirm-image-btn" onclick="confirmImageUrl()">Confirmar URL</button>
+          </div>
+        </div>
+        
+        <div id="image-preview" class="image-preview"></div>
+        
+        <div id="saga-images-container" class="saga-images-container" style="display: none;">
+          <h5>Imágenes de la saga (Mínimo 10)</h5>
+          <div class="upload-options">
+            <div class="upload-option" onclick="document.getElementById('saga-file-input').click()">
+              Subir imágenes de la saga
+              <input type="file" id="saga-file-input" style="display: none;" accept="image/*" multiple onchange="handleSagaFilesUpload()">
+            </div>
+          </div>
+          <div id="saga-images-grid" class="saga-images-grid"></div>
+          <button class="confirm-image-btn" onclick="confirmSagaImages()" style="display: none;" id="confirm-saga-btn">Confirmar imágenes de saga</button>
+        </div>
+        
+        <button onclick="agregarLibro()">Agregar libro</button>
+      </div>
+      
+      <div class="admin-section" id="edit-book-form">
+        <h4>Editar libro</h4>
+        <input id="edit-titulo" placeholder="Título del libro" />
+        <input id="edit-resena" placeholder="Reseña del libro" />
+        <input id="edit-caracteristica1" placeholder="Característica 1" />
+        <input id="edit-caracteristica2" placeholder="Característica 2" />
+        <div class="form-row">
+          <input id="edit-autor" placeholder="Autor" />
+          <input id="edit-editorial" placeholder="Editorial" />
+        </div>
+        <select id="edit-categoria">
+          <option value="literatura">Literatura</option>
+          <option value="consulta">Consulta y referencia</option>
+          <option value="artisticos">Artísticos e ilustrados</option>
+          <option value="divulgativos">Divulgativos</option>
+          <option value="tecnicos">Técnicos o especializados</option>
+          <option value="practicos">Prácticos</option>
+          <option value="religiosos">Religiosos y sagrados</option>
+          <option value="autoayuda">Autoayuda</option>
+          <option value="infantiles">Infantiles</option>
+          <option value="novelas">Novelas</option>
+          <option value="suspenso">Suspenso</option>
+          <option value="sagas">Sagas</option>
+        </select>
+        <select id="edit-disponible">
+          <option value="true">Disponible</option>
+          <option value="false">No disponible</option>
+        </select>
+        
+        <div class="upload-options">
+          <div class="upload-option" onclick="document.getElementById('edit-file-input').click()">
+            Subir imagen desde dispositivo
+            <input type="file" id="edit-file-input" style="display: none;" accept="image/*" onchange="handleEditFileUpload()">
+          </div>
+          <div class="upload-option">
+            Usar URL de imagen
+            <input id="edit-imagen" placeholder="URL de la imagen" style="margin-top: 0.5rem;" />
+            <button class="confirm-image-btn" onclick="confirmEditImageUrl()">Confirmar URL</button>
+          </div>
+        </div>
+        
+        <div id="edit-image-preview" class="image-preview"></div>
+        
+        <div id="edit-saga-images-container" class="saga-images-container" style="display: none;">
+          <h5>Imágenes de la saga (Mínimo 10)</h5>
+          <div class="upload-options">
+            <div class="upload-option" onclick="document.getElementById('edit-saga-file-input').click()">
+              Subir imágenes de la saga
+              <input type="file" id="edit-saga-file-input" style="display: none;" accept="image/*" multiple onchange="handleEditSagaFilesUpload()">
+            </div>
+          </div>
+          <div id="edit-saga-images-grid" class="saga-images-grid"></div>
+          <button class="confirm-image-btn" onclick="confirmEditSagaImages()" style="display: none;" id="confirm-edit-saga-btn">Confirmar imágenes de saga</button>
+        </div>
+        
+        <input type="hidden" id="edit-index" />
+        <div class="form-row">
+          <button onclick="guardarEdicion()">Guardar cambios</button>
+          <button class="logout-btn" onclick="cancelarEdicion()">Cancelar</button>
+        </div>
+      </div>
+      
+      <div class="admin-section">
+        <h4>Libros existentes</h4>
+        <div id="book-list-admin"></div>
+      </div>
+    </div>
+    
+    <div id="images-tab" class="tab-content">
+      <div class="admin-section">
+        <h4>Configuración de imágenes</h4>
+        <p>Imagen de fondo:</p>
+        <input id="background-url" placeholder="URL de la imagen de fondo" />
+        <button onclick="updateBackground()">Actualizar fondo</button>
+        
+        <p>Imágenes destacadas:</p>
+        <div class="form-row">
+          <input id="img1-url" placeholder="URL imagen 1" />
+          <button onclick="updateImage('img1')">Actualizar</button>
+        </div>
+        <div class="form-row">
+          <input id="img2-url" placeholder="URL imagen 2" />
+          <button onclick="updateImage('img2')">Actualizar</button>
+        </div>
+        <div class="form-row">
+          <input id="img3-url" placeholder="URL imagen 3" />
+          <button onclick="updateImage('img3')">Actualizar</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="social-tab" class="tab-content">
+      <div class="admin-section">
+        <h4>Configuración de redes sociales</h4>
+        <div class="form-row">
+          <input id="facebook-url" placeholder="URL de Facebook" value="https://facebook.com" />
+          <input id="facebook-icon" placeholder="URL icono Facebook" value="https://cdn-icons-png.flaticon.com/512/145/145802.png" />
+        </div>
+        <div class="form-row">
+          <input id="instagram-url" placeholder="URL de Instagram" value="https://instagram.com" />
+          <input id="instagram-icon" placeholder="URL icono Instagram" value="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" />
+        </div>
+        <div class="form-row">
+          <input id="whatsapp-url" placeholder="URL de WhatsApp" value="https://wa.me/5210000000000" />
+          <input id="whatsapp-icon" placeholder="URL icono WhatsApp" value="https://cdn-icons-png.flaticon.com/512/733/733585.png" />
+        </div>
+        <button onclick="updateSocialLinks()">Guardar cambios</button>
+      </div>
+    </div>
+    
+    <div id="logo-tab" class="tab-content">
+      <div class="admin-section">
+        <h4>Configuración de logotipos</h4>
+        <p>Logotipo izquierdo:</p>
+        <div class="upload-options">
+          <div class="upload-option" onclick="document.getElementById('logo-left-input').click()">
+            Subir logotipo izquierdo
+            <input type="file" id="logo-left-input" style="display: none;" accept="image/*" onchange="handleLogoUpload('left')">
+          </div>
+          <div class="upload-option">
+            Usar URL de logotipo
+            <input id="logo-left-url" placeholder="URL logotipo izquierdo" style="margin-top: 0.5rem;" />
+            <button class="confirm-image-btn" onclick="confirmLogoUrl('left')">Confirmar URL</button>
+          </div>
+        </div>
+        <div id="logo-left-preview" class="image-preview"></div>
+        
+        <p>Logotipo derecho:</p>
+        <div class="upload-options">
+          <div class="upload-option" onclick="document.getElementById('logo-right-input').click()">
+            Subir logotipo derecho
+            <input type="file" id="logo-right-input" style="display: none;" accept="image/*" onchange="handleLogoUpload('right')">
+          </div>
+          <div class="upload-option">
+            Usar URL de logotipo
+            <input id="logo-right-url" placeholder="URL logotipo derecho" style="margin-top: 0.5rem;" />
+            <button class="confirm-image-btn" onclick="confirmLogoUrl('right')">Confirmar URL</button>
+          </div>
+        </div>
+        <div id="logo-right-preview" class="image-preview"></div>
+        
+        <button onclick="updateLogos()">Guardar cambios</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="social">
+    <h3>Contáctanos</h3>
+    <div class="social-icons" id="social-links">
+      <!-- Redes sociales generadas dinámicamente -->
+    </div>
+    <div class="qr-container">
+      <p>Escanea para visitar Librería Milenium:</p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://libreria-milenium.com&size=180x180" alt="QR Librería Milenium" />
+    </div>
+  </section>
+
+  <script>
+    // Datos iniciales
+    let libros = JSON.parse(localStorage.getItem("libros")) || [
+      {
+        titulo: "El Principito",
+        autor: "Antoine de Saint-Exupéry",
+        editorial: "Salamandra",
+        categoria: "literatura",
+        disponible: "true",
+        imagen: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f",
+        resena: "Una obra clásica que habla sobre la amistad, el amor y la pérdida desde la perspectiva de un niño.",
+        caracteristica1: "Incluye ilustraciones originales del autor",
+        caracteristica2: "Perfecto para todas las edades"
+      },
+      {
+        titulo: "Cien años de soledad",
+        autor: "Gabriel García Márquez",
+        editorial: "Diana",
+        categoria: "novelas",
+        disponible: "true",
+        imagen: "https://images.unsplash.com/photo-1544947950-fa07a98d237f",
+        resena: "La obra maestra del realismo mágico que narra la historia de la familia Buendía en Macondo.",
+        caracteristica1: "Premio Nobel de Literatura 1982",
+        caracteristica2: "Edición conmemorativa"
+      },
+      {
+        titulo: "Harry Potter y la piedra filosofal",
+        autor: "J.K. Rowling",
+        editorial: "Salamandra",
+        categoria: "sagas",
+        disponible: "true",
+        imagen: "https://images.unsplash.com/photo-1589998059171-988d887df646",
+        resena: "El inicio de la saga más famosa de la literatura juvenil que sigue las aventuras del joven mago.",
+        caracteristica1: "Primer libro de la saga",
+        caracteristica2: "Más de 500 millones de copias vendidas"
+      },
+      {
+        titulo: "El arte de la guerra",
+        autor: "Sun Tzu",
+        editorial: "Penguin Classics",
+        categoria: "autoayuda",
+        disponible: "true",
+        imagen: "https://images.unsplash.com/photo-1541963463532-d68292c34b19",
+        resena: "Un antiguo tratado militar chino que se ha convertido en un clásico de la estrategia.",
+        caracteristica1: "Aplicable a negocios y vida personal",
+        caracteristica2: "Traducción moderna"
+      },
+      {
+        titulo: "La biblia de la física",
+        autor: "Varios autores",
+        editorial: "Científica",
+        categoria: "tecnicos",
+        disponible: "false",
+        imagen: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6",
+        resena: "Compendio completo de principios físicos con aplicaciones prácticas.",
+        caracteristica1: "Más de 1000 páginas de contenido",
+        caracteristica2: "Incluye ejercicios resueltos"
+      }
+    ];
+    
+    let socialLinks = JSON.parse(localStorage.getItem("socialLinks")) || {
+      facebook: { url: "https://facebook.com", icon: "https://cdn-icons-png.flaticon.com/512/145/145802.png" },
+      instagram: { url: "https://instagram.com", icon: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png" },
+      whatsapp: { url: "https://wa.me/5210000000000", icon: "https://cdn-icons-png.flaticon.com/512/733/733585.png" }
+    };
+    
+    let imagesConfig = JSON.parse(localStorage.getItem("imagesConfig")) || {
+      background: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c",
+      img1: "https://images.unsplash.com/photo-1544947950-fa07a98d237f",
+      img2: "https://images.unsplash.com/photo-1589998059171-988d887df646",
+      img3: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6"
+    };
+    
+    let logosConfig = JSON.parse(localStorage.getItem("logosConfig")) || {
+      left: "https://cdn.pixabay.com/photo/2016/09/16/09/21/open-book-1673578_960_720.png",
+      right: "https://cdn.pixabay.com/photo/2016/09/16/09/21/open-book-1673578_960_720.png"
+    };
+    
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    let uploadedImage = null;
+    let uploadedSagaImages = [];
+    let editUploadedImage = null;
+    let editUploadedSagaImages = [];
+    let uploadedLogoLeft = null;
+    let uploadedLogoRight = null;
+    let currentCarouselPosition = 0;
+    let currentCategory = 'all';
+    let searchTerm = '';
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', function() {
+      renderizarLibros();
+      renderizarSocialLinks();
+      renderizarImagenes();
+      renderizarCarousel();
+      actualizarContadorLibros();
+      
+      // Cargar valores de configuración
+      document.getElementById("background-url").value = imagesConfig.background;
+      document.getElementById("img1-url").value = imagesConfig.img1;
+      document.getElementById("img2-url").value = imagesConfig.img2;
+      document.getElementById("img3-url").value = imagesConfig.img3;
+      
+      document.getElementById("facebook-url").value = socialLinks.facebook.url;
+      document.getElementById("facebook-icon").value = socialLinks.facebook.icon;
+      document.getElementById("instagram-url").value = socialLinks.instagram.url;
+      document.getElementById("instagram-icon").value = socialLinks.instagram.icon;
+      document.getElementById("whatsapp-url").value = socialLinks.whatsapp.url;
+      document.getElementById("whatsapp-icon").value = socialLinks.whatsapp.icon;
+      
+      document.getElementById("logo-left-url").value = logosConfig.left;
+      document.getElementById("logo-right-url").value = logosConfig.right;
+      
+      // Mostrar logos
+      document.getElementById('header-logo-left').src = logosConfig.left;
+      document.getElementById('header-logo-right').src = logosConfig.right;
+      
+      // Verificar usuario logeado
+      if (currentUser) {
+        showUserLoggedIn(currentUser.email);
+      }
+      
+      // Configurar búsqueda
+      document.getElementById("search-input").addEventListener('input', function() {
+        searchTerm = this.value.toLowerCase();
+        renderizarLibros();
+      });
+      
+      // Configurar categorías
+      document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const category = this.getAttribute('data-category');
+          filterBooks(category);
+        });
+      });
+      
+      // Configurar categoría en formulario
+      document.getElementById("categoria").addEventListener('change', function() {
+        document.getElementById("saga-images-container").style.display = 
+          this.value === 'sagas' ? 'block' : 'none';
+      });
+      
+      document.getElementById("edit-categoria").addEventListener('change', function() {
+        document.getElementById("edit-saga-images-container").style.display = 
+          this.value === 'sagas' ? 'block' : 'none';
+      });
+    });
+
+    // Funciones para el carrusel
+    function renderizarCarousel() {
+      const carousel = document.getElementById('new-books-carousel');
+      carousel.innerHTML = '';
+      
+      // Tomar los últimos 5 libros como "nuevos"
+      const librosNuevos = [...libros].reverse().slice(0, 5);
+      
+      librosNuevos.forEach(libro => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        item.innerHTML = `
+          <img src="${libro.imagen}" alt="${libro.titulo}">
+          <h4>${libro.titulo}</h4>
+        `;
+        carousel.appendChild(item);
+      });
+      
+      updateCarouselPosition();
+    }
+
+    function moveCarousel(direction) {
+      const carousel = document.getElementById('new-books-carousel');
+      const items = carousel.querySelectorAll('.carousel-item');
+      if (items.length === 0) return;
+      
+      const itemWidth = items[0].offsetWidth + 32; // Ancho + margen
+      const maxPosition = -(items.length - 1) * itemWidth;
+      
+      currentCarouselPosition += direction * itemWidth;
+      
+      // Limitar desplazamiento
+      if (currentCarouselPosition > 0) {
+        currentCarouselPosition = 0;
+      } else if (currentCarouselPosition < maxPosition) {
+        currentCarouselPosition = maxPosition;
+      }
+      
+      updateCarouselPosition();
+    }
+
+    function updateCarouselPosition() {
+      const carousel = document.getElementById('new-books-carousel');
+      carousel.style.transform = `translateX(${currentCarouselPosition}px)`;
+    }
+
+    // Funciones para logotipos
+    function handleLogoUpload(side) {
+      const fileInput = document.getElementById(`logo-${side}-input`);
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById(`logo-${side}-preview`).innerHTML = `
+            <div class="image-preview-item">
+              <img src="${e.target.result}" />
+              <div class="preview-actions">
+                <button class="confirm-image-btn" onclick="confirmLogoUpload('${side}', '${e.target.result}')">Confirmar</button>
+                <button class="logout-btn" onclick="removeLogoUpload('${side}')">Cancelar</button>
+              </div>
+            </div>
+          `;
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+    }
+
+    function confirmLogoUpload(side, imageSrc) {
+      if (side === 'left') {
+        uploadedLogoLeft = imageSrc;
+      } else {
+        uploadedLogoRight = imageSrc;
+      }
+      document.getElementById(`logo-${side}-preview`).innerHTML = `
+        <div class="image-preview-item">
+          <img src="${imageSrc}" />
+          <button class="remove-image-btn" onclick="removeLogoUpload('${side}')">×</button>
+        </div>
+      `;
+    }
+
+    function confirmLogoUrl(side) {
+      const url = document.getElementById(`logo-${side}-url`).value;
+      if (url) {
+        if (side === 'left') {
+          uploadedLogoLeft = url;
+        } else {
+          uploadedLogoRight = url;
+        }
+        document.getElementById(`logo-${side}-preview`).innerHTML = `
+          <div class="image-preview-item">
+            <img src="${url}" />
+            <button class="remove-image-btn" onclick="removeLogoUpload('${side}')">×</button>
+          </div>
+        `;
+      } else {
+        alert("Por favor ingrese una URL válida");
+      }
+    }
+
+    function removeLogoUpload(side) {
+      if (side === 'left') {
+        uploadedLogoLeft = null;
+      } else {
+        uploadedLogoRight = null;
+      }
+      document.getElementById(`logo-${side}-preview`).innerHTML = '';
+      document.getElementById(`logo-${side}-input`).value = '';
+      document.getElementById(`logo-${side}-url`).value = '';
+    }
+
+    function updateLogos() {
+      if (uploadedLogoLeft) {
+        logosConfig.left = uploadedLogoLeft;
+        document.getElementById('header-logo-left').src = uploadedLogoLeft;
+      }
+      if (uploadedLogoRight) {
+        logosConfig.right = uploadedLogoRight;
+        document.getElementById('header-logo-right').src = uploadedLogoRight;
+      }
+      
+      localStorage.setItem("logosConfig", JSON.stringify(logosConfig));
+      alert("Logotipos actualizados correctamente");
+    }
+
+    // Funciones para libros
+    function actualizarContadorLibros() {
+      document.getElementById('total-books-count').textContent = libros.length;
+    }
+
+    function agregarLibro() {
+      const titulo = document.getElementById("titulo").value;
+      const resena = document.getElementById("resena").value;
+      const caracteristica1 = document.getElementById("caracteristica1").value;
+      const caracteristica2 = document.getElementById("caracteristica2").value;
+      const autor = document.getElementById("autor").value;
+      const editorial = document.getElementById("editorial").value;
+      const categoria = document.getElementById("categoria").value;
+      const disponible = document.getElementById("disponible").value;
+      const imagenUrl = document.getElementById("imagen").value;
+      
+      if (!titulo) {
+        alert("Por favor complete el título del libro");
+        return;
+      }
+      
+      // Validar imagen
+      let imagen = imagenUrl;
+      if (uploadedImage) {
+        imagen = uploadedImage;
+      }
+      
+      if (!imagen) {
+        alert("Por favor agregue una imagen (subiendo archivo o ingresando URL)");
+        return;
+      }
+      
+      // Validar sagas
+      if (categoria === 'sagas' && uploadedSagaImages.length < 10) {
+        alert("Para una saga debes subir al menos 10 imágenes");
+        return;
+      }
+      
+      // Crear objeto libro
+      const libro = { 
+        titulo, 
+        resena,
+        caracteristica1,
+        caracteristica2,
+        autor, 
+        editorial, 
+        categoria, 
+        disponible, 
+        imagen 
+      };
+      
+      // Agregar imágenes de saga si corresponde
+      if (categoria === 'sagas') {
+        libro.sagaImages = [...uploadedSagaImages];
+      }
+      
+      libros.push(libro);
+      localStorage.setItem("libros", JSON.stringify(libros));
+      renderizarLibros();
+      renderizarCarousel();
+      actualizarContadorLibros();
+      
+      // Limpiar campos
+      document.getElementById("titulo").value = "";
+      document.getElementById("resena").value = "";
+      document.getElementById("caracteristica1").value = "";
+      document.getElementById("caracteristica2").value = "";
+      document.getElementById("autor").value = "";
+      document.getElementById("editorial").value = "";
+      document.getElementById("imagen").value = "";
+      document.getElementById("image-preview").innerHTML = "";
+      document.getElementById("saga-images-grid").innerHTML = "";
+      document.getElementById("saga-images-container").style.display = "none";
+      uploadedImage = null;
+      uploadedSagaImages = [];
+      
+      alert("Libro agregado exitosamente");
+    }
+
+    function editarLibro(index) {
+      const libro = libros[index];
+      
+      // Llenar el formulario de edición
+      document.getElementById("edit-titulo").value = libro.titulo;
+      document.getElementById("edit-resena").value = libro.resena || '';
+      document.getElementById("edit-caracteristica1").value = libro.caracteristica1 || '';
+      document.getElementById("edit-caracteristica2").value = libro.caracteristica2 || '';
+      document.getElementById("edit-autor").value = libro.autor || '';
+      document.getElementById("edit-editorial").value = libro.editorial || '';
+      document.getElementById("edit-categoria").value = libro.categoria;
+      document.getElementById("edit-disponible").value = libro.disponible;
+      document.getElementById("edit-imagen").value = libro.imagen.startsWith('http') ? libro.imagen : '';
+      document.getElementById("edit-index").value = index;
+      
+      // Mostrar imagen actual
+      const editImagePreview = document.getElementById('edit-image-preview');
+      editImagePreview.innerHTML = '';
+      if (libro.imagen) {
+        editImagePreview.innerHTML = `
+          <div class="image-preview-item">
+            <img src="${libro.imagen}" />
+            <button class="remove-image-btn" onclick="removeEditUploadedImage()">×</button>
+          </div>
+        `;
+        editUploadedImage = libro.imagen;
+      }
+      
+      // Mostrar imágenes de saga si corresponde
+      const editSagaContainer = document.getElementById('edit-saga-images-container');
+      const editSagaGrid = document.getElementById('edit-saga-images-grid');
+      editSagaGrid.innerHTML = '';
+      
+      if (libro.categoria === 'sagas' && libro.sagaImages) {
+        editSagaContainer.style.display = 'block';
+        editUploadedSagaImages = [...libro.sagaImages];
+        
+        libro.sagaImages.forEach((img, i) => {
+          editSagaGrid.innerHTML += `
+            <div class="saga-image-item">
+              <img src="${img}" />
+              <button class="remove-saga-image-btn" onclick="removeEditSagaImage(${i})">×</button>
+            </div>
+          `;
+        });
+      } else {
+        editSagaContainer.style.display = 'none';
+        editUploadedSagaImages = [];
+      }
+      
+      // Mostrar formulario de edición
+      document.getElementById("edit-book-form").style.display = "block";
+      document.getElementById("books-tab").scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function guardarEdicion() {
+      const index = document.getElementById("edit-index").value;
+      const titulo = document.getElementById("edit-titulo").value;
+      const resena = document.getElementById("edit-resena").value;
+      const caracteristica1 = document.getElementById("edit-caracteristica1").value;
+      const caracteristica2 = document.getElementById("edit-caracteristica2").value;
+      const autor = document.getElementById("edit-autor").value;
+      const editorial = document.getElementById("edit-editorial").value;
+      const categoria = document.getElementById("edit-categoria").value;
+      const disponible = document.getElementById("edit-disponible").value;
+      const imagenUrl = document.getElementById("edit-imagen").value;
+      
+      if (!titulo) {
+        alert("Por favor complete el título del libro");
+        return;
+      }
+      
+      // Validar imagen
+      let imagen = imagenUrl;
+      if (editUploadedImage) {
+        imagen = editUploadedImage;
+      }
+      
+      if (!imagen) {
+        alert("Por favor agregue una imagen (subiendo archivo o ingresando URL)");
+        return;
+      }
+      
+      // Validar sagas
+      if (categoria === 'sagas' && editUploadedSagaImages.length < 10) {
+        alert("Para una saga debes subir al menos 10 imágenes");
+        return;
+      }
+      
+      // Actualizar libro
+      libros[index] = { 
+        titulo, 
+        resena,
+        caracteristica1,
+        caracteristica2,
+        autor, 
+        editorial, 
+        categoria, 
+        disponible, 
+        imagen 
+      };
+      
+      // Agregar imágenes de saga si corresponde
+      if (categoria === 'sagas') {
+        libros[index].sagaImages = [...editUploadedSagaImages];
+      } else {
+        delete libros[index].sagaImages;
+      }
+      
+      localStorage.setItem("libros", JSON.stringify(libros));
+      renderizarLibros();
+      renderizarCarousel();
+      actualizarContadorLibros();
+      renderAdminBookList();
+      
+      // Ocultar formulario de edición
+      document.getElementById("edit-book-form").style.display = "none";
+      alert("Cambios guardados exitosamente");
+    }
+
+    function eliminarLibro(index) {
+      if (confirm("¿Está seguro que desea eliminar este libro?")) {
+        libros.splice(index, 1);
+        localStorage.setItem("libros", JSON.stringify(libros));
+        renderizarLibros();
+        renderizarCarousel();
+        actualizarContadorLibros();
+        renderAdminBookList();
+        alert("Libro eliminado exitosamente");
+      }
+    }
+
+    function cancelarEdicion() {
+      document.getElementById("edit-book-form").style.display = "none";
+    }
+
+    // Funciones para usuarios (solo administrador)
+    function loginUser() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      
+      // Credenciales únicas de administrador
+      const adminEmail = "admin@milenium.com";
+      const adminPassword = "milenium123";
+      
+      if (email === adminEmail && password === adminPassword) {
+        currentUser = { email };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        showUserLoggedIn(email);
+        alert('Inicio de sesión exitoso como administrador');
+      } else {
+        alert('Credenciales incorrectas');
+      }
+    }
+
+    function logoutUser() {
+      currentUser = null;
+      localStorage.removeItem('currentUser');
+      document.getElementById('user-info').style.display = 'none';
+      alert('Sesión cerrada exitosamente');
+    }
+
+    function showUserLoggedIn(email) {
+      document.getElementById('user-email').textContent = email;
+      document.getElementById('user-info').style.display = 'block';
+    }
+
+    // Funciones para panel de administrador
+    function mostrarPanelAdmin() {
+      if (!currentUser) {
+        alert('Debe iniciar sesión primero');
+        return;
+      }
+      
+      document.getElementById('admin-panel').style.display = 'block';
+      document.getElementById('admin-overlay').style.display = 'block';
+      renderAdminBookList();
+    }
+
+    function cerrarSesionAdmin() {
+      document.getElementById('admin-panel').style.display = 'none';
+      document.getElementById('admin-overlay').style.display = 'none';
+    }
+
+    function openTab(tabId) {
+      // Ocultar todas las pestañas
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Mostrar pestaña seleccionada
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`.tab[onclick="openTab('${tabId}')"]`).classList.add('active');
+    }
+
+    function renderAdminBookList() {
+      const container = document.getElementById('book-list-admin');
+      container.innerHTML = '';
+      
+      libros.forEach((libro, index) => {
+        const bookDiv = document.createElement('div');
+        bookDiv.className = 'book';
+        bookDiv.innerHTML = `
+          <img src="${libro.imagen}" alt="${libro.titulo}" />
+          <h4>${libro.titulo}</h4>
+          <p>${libro.autor} - ${libro.editorial}</p>
+          <p>Categoría: ${libro.categoria}</p>
+          <p class="${libro.disponible === 'true' ? 'available' : 'not-available'}">${libro.disponible === 'true' ? 'Disponible' : 'No disponible'}</p>
+          <div class="book-actions">
+            <button class="edit-btn" onclick="editarLibro(${index})">Editar</button>
+            <button class="logout-btn" onclick="eliminarLibro(${index})">Eliminar</button>
+          </div>
+        `;
+        container.appendChild(bookDiv);
+      });
+    }
+
+    function renderizarLibros() {
+      const container = document.getElementById('book-list');
+      container.innerHTML = '';
+      
+      const filteredBooks = libros.filter(libro => {
+        const matchesCategory = currentCategory === 'all' || libro.categoria === currentCategory;
+        const matchesSearch = searchTerm === '' || 
+          libro.titulo.toLowerCase().includes(searchTerm) || 
+          libro.autor.toLowerCase().includes(searchTerm) ||
+          libro.categoria.toLowerCase().includes(searchTerm);
+        return matchesCategory && matchesSearch;
+      });
+      
+      if (filteredBooks.length === 0) {
+        container.innerHTML = '<p class="section-title">No se encontraron libros</p>';
+        return;
+      }
+      
+      filteredBooks.forEach(libro => {
+        const bookDiv = document.createElement('div');
+        bookDiv.className = 'book';
+        bookDiv.innerHTML = `
+          <img src="${libro.imagen}" alt="${libro.titulo}" />
+          <h4>${libro.titulo}</h4>
+          <p>${libro.autor}</p>
+          <p class="${libro.disponible === 'true' ? 'available' : 'not-available'}">${libro.disponible === 'true' ? 'Disponible' : 'Agotado'}</p>
+          <div class="book-tooltip">
+            <h5>${libro.titulo}</h5>
+            <p><strong>Autor:</strong> ${libro.autor}</p>
+            <p><strong>Editorial:</strong> ${libro.editorial}</p>
+            <p><strong>Reseña:</strong> ${libro.resena}</p>
+            <ul>
+              <li>${libro.caracteristica1}</li>
+              <li>${libro.caracteristica2}</li>
+            </ul>
+          </div>
+        `;
+        container.appendChild(bookDiv);
+      });
+    }
+
+    function filterBooks(category) {
+      currentCategory = category;
+      
+      // Actualizar pestañas activas
+      document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelector(`.category-tab[data-category="${category}"]`).classList.add('active');
+      
+      renderizarLibros();
+    }
+
+    function renderizarSocialLinks() {
+      const container = document.getElementById('social-links');
+      container.innerHTML = '';
+      
+      for (const [platform, data] of Object.entries(socialLinks)) {
+        container.innerHTML += `
+          <a href="${data.url}" target="_blank">
+            <img src="${data.icon}" alt="${platform}" />
+            ${platform.charAt(0).toUpperCase() + platform.slice(1)}
+          </a>
+        `;
+      }
+    }
+
+    function renderizarImagenes() {
+      document.getElementById('background-image').style.backgroundImage = `url('${imagesConfig.background}')`;
+    }
+
+    function updateBackground() {
+      const url = document.getElementById('background-url').value;
+      if (url) {
+        imagesConfig.background = url;
+        localStorage.setItem('imagesConfig', JSON.stringify(imagesConfig));
+        renderizarImagenes();
+        alert('Fondo actualizado correctamente');
+      } else {
+        alert('Por favor ingrese una URL válida');
+      }
+    }
+
+    function updateImage(imgId) {
+      const url = document.getElementById(`${imgId}-url`).value;
+      if (url) {
+        imagesConfig[imgId] = url;
+        localStorage.setItem('imagesConfig', JSON.stringify(imagesConfig));
+        alert(`Imagen ${imgId} actualizada correctamente`);
+      } else {
+        alert('Por favor ingrese una URL válida');
+      }
+    }
+
+    function updateSocialLinks() {
+      const facebookUrl = document.getElementById('facebook-url').value;
+      const facebookIcon = document.getElementById('facebook-icon').value;
+      const instagramUrl = document.getElementById('instagram-url').value;
+      const instagramIcon = document.getElementById('instagram-icon').value;
+      const whatsappUrl = document.getElementById('whatsapp-url').value;
+      const whatsappIcon = document.getElementById('whatsapp-icon').value;
+      
+      socialLinks = {
+        facebook: { url: facebookUrl, icon: facebookIcon },
+        instagram: { url: instagramUrl, icon: instagramIcon },
+        whatsapp: { url: whatsappUrl, icon: whatsappIcon }
+      };
+      
+      localStorage.setItem('socialLinks', JSON.stringify(socialLinks));
+      renderizarSocialLinks();
+      alert('Redes sociales actualizadas correctamente');
+    }
+
+    // Funciones para manejo de imágenes
+    function handleFileUpload() {
+      const fileInput = document.getElementById('file-input');
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('image-preview').innerHTML = `
+            <div class="image-preview-item">
+              <img src="${e.target.result}" />
+              <button class="remove-image-btn" onclick="removeUploadedImage()">×</button>
+            </div>
+          `;
+          uploadedImage = e.target.result;
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+    }
+
+    function confirmImageUrl() {
+      const url = document.getElementById('imagen').value;
+      if (url) {
+        document.getElementById('image-preview').innerHTML = `
+          <div class="image-preview-item">
+            <img src="${url}" />
+            <button class="remove-image-btn" onclick="removeUploadedImage()">×</button>
+          </div>
+        `;
+        uploadedImage = url;
+      } else {
+        alert("Por favor ingrese una URL válida");
+      }
+    }
+
+    function removeUploadedImage() {
+      uploadedImage = null;
+      document.getElementById('image-preview').innerHTML = '';
+      document.getElementById('imagen').value = '';
+      document.getElementById('file-input').value = '';
+    }
+
+    function handleSagaFilesUpload() {
+      const fileInput = document.getElementById('saga-file-input');
+      const files = fileInput.files;
+      if (files.length > 0) {
+        const grid = document.getElementById('saga-images-grid');
+        grid.innerHTML = '';
+        
+        Array.from(files).forEach((file, index) => {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            grid.innerHTML += `
+              <div class="saga-image-item">
+                <img src="${e.target.result}" />
+                <button class="remove-saga-image-btn" onclick="removeSagaImage(${index})">×</button>
+              </div>
+            `;
+            uploadedSagaImages[index] = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+        
+        document.getElementById('confirm-saga-btn').style.display = 'block';
+      }
+    }
+
+    function removeSagaImage(index) {
+      uploadedSagaImages.splice(index, 1);
+      renderSagaImagesGrid();
+    }
+
+    function renderSagaImagesGrid() {
+      const grid = document.getElementById('saga-images-grid');
+      grid.innerHTML = '';
+      
+      uploadedSagaImages.forEach((img, index) => {
+        grid.innerHTML += `
+          <div class="saga-image-item">
+            <img src="${img}" />
+            <button class="remove-saga-image-btn" onclick="removeSagaImage(${index})">×</button>
+          </div>
+        `;
+      });
+      
+      document.getElementById('confirm-saga-btn').style.display = uploadedSagaImages.length > 0 ? 'block' : 'none';
+    }
+
+    function confirmSagaImages() {
+      alert(`Se han cargado ${uploadedSagaImages.length} imágenes de la saga`);
+    }
+
+    // Funciones para editar imágenes
+    function handleEditFileUpload() {
+      const fileInput = document.getElementById('edit-file-input');
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('edit-image-preview').innerHTML = `
+            <div class="image-preview-item">
+              <img src="${e.target.result}" />
+              <button class="remove-image-btn" onclick="removeEditUploadedImage()">×</button>
+            </div>
+          `;
+          editUploadedImage = e.target.result;
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+    }
+
+    function confirmEditImageUrl() {
+      const url = document.getElementById('edit-imagen').value;
+      if (url) {
+        document.getElementById('edit-image-preview').innerHTML = `
+          <div class="image-preview-item">
+            <img src="${url}" />
+            <button class="remove-image-btn" onclick="removeEditUploadedImage()">×</button>
+          </div>
+        `;
+        editUploadedImage = url;
+      } else {
+        alert("Por favor ingrese una URL válida");
+      }
+    }
+
+    function removeEditUploadedImage() {
+      editUploadedImage = null;
+      document.getElementById('edit-image-preview').innerHTML = '';
+      document.getElementById('edit-imagen').value = '';
+      document.getElementById('edit-file-input').value = '';
+    }
+
+    function handleEditSagaFilesUpload() {
+      const fileInput = document.getElementById('edit-saga-file-input');
+      const files = fileInput.files;
+      if (files.length > 0) {
+        const grid = document.getElementById('edit-saga-images-grid');
+        
+        Array.from(files).forEach((file) => {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            grid.innerHTML += `
+              <div class="saga-image-item">
+                <img src="${e.target.result}" />
+                <button class="remove-saga-image-btn" onclick="removeEditSagaImage(${editUploadedSagaImages.length})">×</button>
+              </div>
+            `;
+            editUploadedSagaImages.push(e.target.result);
+          };
+          reader.readAsDataURL(file);
+        });
+        
+        document.getElementById('confirm-edit-saga-btn').style.display = 'block';
+      }
+    }
+
+    function removeEditSagaImage(index) {
+      editUploadedSagaImages.splice(index, 1);
+      renderEditSagaImagesGrid();
+    }
+
+    function renderEditSagaImagesGrid() {
+      const grid = document.getElementById('edit-saga-images-grid');
+      grid.innerHTML = '';
+      
+      editUploadedSagaImages.forEach((img, index) => {
+        grid.innerHTML += `
+          <div class="saga-image-item">
+            <img src="${img}" />
+            <button class="remove-saga-image-btn" onclick="removeEditSagaImage(${index})">×</button>
+          </div>
+        `;
+      });
+      
+      document.getElementById('confirm-edit-saga-btn').style.display = editUploadedSagaImages.length > 0 ? 'block' : 'none';
+    }
+
+    function confirmEditSagaImages() {
+      alert(`Se han cargado ${editUploadedSagaImages.length} imágenes de la saga`);
+    }
+  </script>
+</body>
+</html>
